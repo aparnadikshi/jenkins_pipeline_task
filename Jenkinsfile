@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     triggers {
-        cron('H/2 * * * *')        // Runs every 2 minutes
-        pollSCM('H/1 * * * *')     // Checks GitHub every 1 minute
+        cron('H/2 * * * *')
+        pollSCM('H/1 * * * *')
     }
 
     stages {
@@ -17,8 +17,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Compiling Java file..."
-                sh 'javac Test.java'
-                sh 'echo Build Successful > build.txt'
+                bat 'javac Test.java'
+                bat 'echo Build Successful > build.txt'
             }
         }
 
