@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    triggers {
+        cron('H/5 * * * *')        // Build every 5 minutes
+        pollSCM('H/2 * * * *')     // Poll SCM every 2 minutes
+    }
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning repository...'
+                git 'https://github.com/aparnadikshi/jenkins_pipeline_task.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building project...'
+                sh 'echo "Build Successful" > build.txt'
+            }
+        }
+
+        stage('Echo Build Status') {
+            steps {
+                echo "Build Status: SUCCESS"
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'build.txt', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline Completed.'
+        }
+    }
+}
